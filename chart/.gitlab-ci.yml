@@ -1,0 +1,11 @@
+stages:
+  - package
+  # - deploy
+
+helm-upload-chart:
+  stage: package
+  image: dtzar/helm-kubectl
+  script:
+    - cd chart
+    - helm package ./ --app-version=$VERSION --version=$VERSION
+    - curl -v -u "${NEXUS_USER}:${NEXUS_PASS}" --upload-file ./momo-store-${VERSION}.tgz $NEXUS_REPO_URL
