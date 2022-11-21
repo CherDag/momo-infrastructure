@@ -1,0 +1,43 @@
+stages:
+  - validate
+  - plan
+  - apply
+
+image:
+  name: hashicorp/terraform:light
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+before_script:
+  - echo -e 'provider_installation {\n  network_mirror {\n    url = "https://terraform-mirror.yandexcloud.net/"\n    include = ["registry.terraform.io/*/*"]\n  }\n  direct {\n    exclude = ["registry.terraform.io/*/*"]\n  }\n}' > ~/.terraformrc
+  # - cat ~/.terraformrc
+  - cd terraform
+  - rm -rf .terraform
+  - echo "${S3CONF_ENC}" | base64 -d > .s3conf
+  - echo "${TFVARS_ENC}" | base64 -d > secret.tfvars
+  - terraform --version
+  - terraform init
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -var-file "secret.tfvars" -out "planfile"
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - planfile
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -var-file "secret.tfvars" -input=false "planfile"
+  dependencies:
+    - plan
+  when: manual
