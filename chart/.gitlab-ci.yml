@@ -1,11 +1,17 @@
 stages:
   - package
-  # - deploy
+  - deploy
 
 helm-upload-chart:
   stage: package
   image: dtzar/helm-kubectl
   script:
     - cd chart
-    - helm package ./ --app-version=$VERSION --version=$VERSION
+    - helm package ./ --app-version=$APP_VERSION --version=$VERSION
     - curl -v -u "${NEXUS_USER}:${NEXUS_PASS}" --upload-file ./momo-store-${VERSION}.tgz $NEXUS_REPO_URL
+
+argo-sync:
+  stage: deploy
+  image: argoproj/argocd:v2.3.3
+  script:
+    - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync momo-store 

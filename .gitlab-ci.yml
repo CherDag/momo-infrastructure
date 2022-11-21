@@ -12,3 +12,15 @@ helm:
   only:
     changes:
       - chart/**/*
+
+terraform:
+  stage: module-pipeline
+  trigger:
+    include: terraform/.gitlab-ci.yml
+    strategy: depend
+  only:
+    changes:
+      - terraform/**/*
+  except:
+    variables:
+      - $CI_PIPELINE_SOURCE == "pipeline"
