@@ -33,6 +33,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           ports:
             - name: {{ .Chart.Name }}
               containerPort: {{ .Values.servicePort }}

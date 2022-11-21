@@ -1,13 +1,24 @@
 backend: # Это имя чарта из dependencies
   # Вместо latest правильнее использовать версию .Chart.AppVersion в шаблоне
   image: gitlab.praktikum-services.ru:5050/a.cherkashin/momo-store/momo-backend
-  replicas: 2
+  replicas: 1
   imagePullPolicy: Always
   servicePort: 8081
   serviceType: ClusterIP
   rollingUpdate:
     maxUnavailable: 1
     maxSurge: 20%
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: 0.1
+    limits:
+      memory: "1025Mi"
+      cpu: 0.2
+  hpaSpec:
+    minReplicas: 1
+    maxReplicas: 5
+    cpuUtilization: 75
 
 frontend:
   image: gitlab.praktikum-services.ru:5050/a.cherkashin/momo-store/momo-frontend
