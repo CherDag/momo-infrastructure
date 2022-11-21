@@ -1,0 +1,45 @@
+# ---
+# groups:
+#   - name: Sausage store rules
+#     rules:
+#     - alert: InstanceDown
+#       expr: up{app="backend"} == 0
+#       for: 1m
+#       labels:
+#         severity: critical
+#         project: "sausage_store"
+#         component: "Backend"
+#     - alert: InstanceDown (frontend)
+#       expr: up{app="frontend"} == 0
+#       for: 1m
+#       labels:
+#         severity: critical
+#         project: "sausage-store"
+#         component: "Frontend"
+#     - alert: InstanceDown (backend-report)
+#       expr: up{app="backend-report"} == 0
+#       for: 1m
+#       labels:
+#         severity: critical
+#         project: "sausage-store"
+#         component: "Backend-report"
+#     - alert: Error 500 from business endpoints
+#       expr: sum(rate(http_server_requests_seconds_count{uri!~"/actuator/health|/actuator/prometheus", status="500"}[1m]))>0
+#       labels:
+#         severity: warning
+#         project: "sausage-store"
+#         component: "Frontend, Backend"
+#     - alert: API latency too high (>100ms)
+#       expr: histogram_quantile(0.95,http_server_requests_seconds_bucket{uri="/api/orders", status=~"2.."})>=0.1
+#       for: 5m
+#       labels:
+#         severity: warning
+#         project: "sausage-store"
+#         component: "Backend"
+#     - alert: Gather metrics failed
+#       expr: http_server_requests_seconds_count{uri="/actuator/prometheus", status!~"2.."}>0
+#       for: 2m
+#       labels:
+#         severity: critical
+#         project: "sausage-store"
+#         component: "Backend"
