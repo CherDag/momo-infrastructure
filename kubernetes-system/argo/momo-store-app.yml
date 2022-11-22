@@ -1,18 +1,12 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: momo-store
-spec:
-  destination:
-    name: ''
-    namespace: momo-store
-    server: 'https://kubernetes.default.svc'
-  source:
-    path: chart
-    repoURL: 'https://gitlab.praktikum-services.ru/a.cherkashin/momo-infrastructure.git'
-    targetRevision: HEAD
-  project: momo-store
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: true
+project: momo-store
+source:
+  repoURL: 'https://nexus.praktikum-services.ru/repository/06-a-cherkashin-momo-store/'
+  targetRevision: x
+  chart: momo-store
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: default
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
