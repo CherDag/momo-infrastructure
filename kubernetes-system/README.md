@@ -23,7 +23,7 @@ helm repo update
 helm install --atomic loki grafana/loki-stack
 ```
 
-Адрес Loki: `http://loki:3100`
+Loki DataSource URL: `http://loki:3100`
 
 ## Prometheus
 
@@ -32,4 +32,4 @@ helm install --atomic prometheus ./prometheus
 kubectl apply -f ./prometheus/admin-user.yaml
 ```
 
-Адрес Prometheus: `http://prometheus:9090`
+Prometheus DataSource URL: `http://prometheus:9090`
