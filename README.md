@@ -5,6 +5,9 @@
 [Momo Store](https://gitlab.praktikum-services.ru/a.cherkashin/momo-store)
 
 # Оглавление
+
+- [Репозиторий инфраструктуры](#репозиторий-инфраструктуры)
+- [Оглавление](#оглавление)
 - [Cтруктура репозитория](#cтруктура-репозитория)
 - [Подготовка инфраструктуры](#подготовка-инфраструктуры)
   - [Кластер и хранилище](#кластер-и-хранилище)
@@ -82,8 +85,8 @@ cd kubernetes-system/argocd
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl apply -n argocd -f ingress.yml
-kubectl apply -n argocd -f policy.yml
 kubectl apply -n argocd -f user.yml
+kubectl apply -n argocd -f policy.yml
 ```
 После установки добавить приложение `momo-store` через YAML
 
