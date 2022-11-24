@@ -33,6 +33,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{.Values.image}}:{{.Chart.AppVersion}}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}-env
           ports:
             - name: {{ .Chart.Name }}
               containerPort: {{ .Values.service.port }}
